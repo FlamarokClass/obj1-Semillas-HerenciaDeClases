@@ -29,7 +29,20 @@ class Parcela {
 		plantas.add(unaPlanta)
 	}
 	
-	method parcelaIdeal() {
-		
-	}
+	method plantasBajitas(){
+		return plantas.all({p => p.altura() <= 1.5})
+	}	
+	
+	method seAsociaBien(unaPlanta) 
+	method cantPlantasBienAsociadas() = plantas.count({planta => self.seAsociaBien(planta)})
+	method porcentajePlantasBienAsociadas() = (self.cantPlantasBienAsociadas() / self.cantidadDePlantas()) * 100 
 }
+
+class Ecologica inherits Parcela {
+	override method seAsociaBien(unaPlanta) = not self.complicaciones() and unaPlanta.esIdeal(self) // le pasamos self(cada instancia de cada parcela ecologica)
+}
+
+class Industrial inherits Parcela {
+	override method seAsociaBien(unaPlanta) = self.cantidadDePlantas() >= 2 and unaPlanta.esFuerte()  
+}
+
